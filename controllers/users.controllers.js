@@ -20,9 +20,22 @@ export const getUser = (req,res) => {
         res.status(200).json({ msg: "OK", users: results });
     });
     };
-    
 
-export const postUsers = (req,res) => {};
+export const postUsers = (req,res) => {
+    const {name, username, password, age} = req.body;
+    //console.log(req.body);
+    pool.execute("insert into users (name, username, password, age) values (?,?,?,?)", 
+        [name, username, password, age],
+        (error,results) =>
+        {
+        if (error) {
+            res.status(500).json({ msg: error, users: [] });
+            return;
+        }
+        res.status(200).json({ msg: "OK", users: results });
+    });
+};
+
 export const putUser = (req,res) => {};
 export const deleteUsers = (req,res) => {};
 export const login = (req,res) => {};
